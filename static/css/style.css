@@ -1,0 +1,568 @@
+
+body {
+    background-color: #f7f3eb;
+    /* Resmin yolunu static klasörüne göre ayarladık ve tırnak içine aldık */
+    background-image: url('../gpt2.png'); 
+    background-repeat: repeat;
+    background-attachment: fixed; /* Sayfa kaysa bile arka planın sabit kalmasını sağlar */
+    
+    /* Yorum satırını burada kapattık veya temizledik, alt satırlar artık aktif: */
+    color: #171717; /* Yazıların net okunması için rengi biraz koyulaştırdık */
+    margin: 0;
+    padding: 0;
+    letter-spacing: -0.02em; /* Yazıları daha şık ve kompakt gösterir */
+}
+
+.ust-resim{
+    display: block !important;
+    margin: 0 auto 20px auto !important;
+    width: 480px;
+    height: 400px;
+    object-fit: contain !important;
+    /*border-radius: 50% !important;*/
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05)
+}
+
+.site-konteyner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+header h1 {
+    font-size: 3.5rem;
+    font-weight: normal;
+    color: #000000;
+    letter-spacing: 0;
+    font-family: 'Parisienne', 'Dancing Script', cursive;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #252222; /* Soluk gri alt metin */
+    font-size: 1.1rem;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 25px;
+    letter-spacing: 0.1em;
+    margin-top: 10px;
+}
+
+/* "hazırsan, paylaş" başlığı için kesin el yazısı tanımı */
+.site-konteyner header h1 {
+    font-family: 'Parisienne', 'Dancing Script', cursive !important;
+    font-size: 4.5rem !important;
+    font-weight: normal !important;
+    color: #000000 !important;
+    letter-spacing: 0 !important;
+    margin-bottom: 8px !important;
+}
+
+/* "← Galeriye Dön" linkini koyulaştırma ve yazı tipini Montserrat yapma */
+header a,
+.geri-link {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 500 !important;
+    color: #171717 !important;       /* Belirgin şık bir koyu gri/siyah */
+    text-decoration: none !important;  /* Altındaki çizgiyi kaldırır */
+    font-size: 0.95rem !important;
+    letter-spacing: 0.02em !important;
+    transition: color 0.2s ease;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Üzerine gelince hafifçe renk değiştirme efekti */
+header a:hover,
+.geri-link:hover {
+    color: #525252 !important;
+}
+
+/* 1. Formun Genel Dokulu Arka Planı */
+.hikaye-formu {
+    /* Gri rengi tamamen iptal edip şeffaf yapıyoruz, böylece arkadaki doku pürüzsüz görünür */
+    background-color: transparent !important; 
+    border-radius: 16px;
+    
+}
+
+/* 2. Formun İçindeki Tüm Yazıların Yazı Tipi */
+.hikaye-formu,
+.form-grup label,
+.form-grup input[type="text"],
+.gonder-butonu,
+.ozel-dosya-butonu,
+.dosya-durum-yazisi {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+/* 3. "isminiz" ve "fotoğraflarınız..." Etiketleri */
+.form-grup label {
+    display: block;
+    font-weight: 500 !important;
+    color: #2b2b2b !important; /* Arka plan dokusunda net okunan koyu gri */
+    font-size: 0.85rem !important;
+    margin-bottom: 8px;
+    text-align: left !important; /* Sola yaslı kalsınlar */
+    background: transparent !important; /* Siyahlığı temizledik */
+}
+
+/* 4. İsim Yazılan Metin Kutusu */
+.form-grup input[type="text"] {
+    display: block !important;
+    width: fit-content !important;
+    padding: 10px 20px;
+    color: #000000 !important; /* Yazılan yazı siyah olacak */
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    min-width: 150px;
+    max-width: 100%;
+    margin: 0 auto !important;
+    text-align: center;
+    background-color: transparent !important;
+}
+
+.form-grup input[type="text"]:focus {
+    border-color: #ffffff !important; /* Tıklanınca kenarlık şık bir siyaha/koyulaşmaya döner */
+    background-color: transparent !important;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Çok hafif, şık bir gölge verir */
+}
+
+/* 5. Alttaki Şık Siyah "paylaş" Butonu */
+.gonder-butonu {
+    background-color: transparent !important; /* Sadece bu buton siyah arka plan alıyor */
+    color: #000000 !important;            /* Yazısı beyaz */
+    border: none !important;
+    padding: 14px 24px !important;
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: 0.05em !important;
+    text-transform: lowercase; 
+    transition: all 0.2s ease;
+    
+    margin-top: 15px;
+}
+
+.gonder-butonu:hover {
+    color: #525252 !important;
+    transform: translateY(-1px);
+}
+
+/* Minimalist Buton Tasarımı yaz butonu->fotoğraflarınızı yüklemek için tıklayın */
+.yaz-butonu {
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.02em;
+    display: inline-block;
+    background-color: transparent;
+    color: #000000;
+    padding: 10px 24px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.yaz-butonu:hover {
+    color: #e5e5e5;
+    transform: translateY(-1px);
+}
+
+.geri-link {
+    color: #a3a3a3;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.geri-link:hover {
+    color: #ffffff;
+}
+
+/* Hikaye/Fotoğraf Kartları */
+.hikaye-alani {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.hikaye-kartı {
+    background: transparent;
+    background-repeat: repeat;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.6); /* İnce beyaz kenarlık */
+}
+
+.hikaye-kartı h3 {
+    font-style: italic !important;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a !important; /* Rengini tam şık bir koyu gri/siyah yaptı */
+    letter-spacing: 0.02em;
+    
+}
+
+/* Fotoğraf Izgarası */
+.resim-izgara {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Resimleri ekrana göre otomatik sığdırır */
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.galeri-resim {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: opacity 0.2s ease;
+}
+
+.galeri-resim:hover {
+    opacity: 0.85; /* Üzerine gelince hafif parlasın/pürüzsüzleşsin */
+}
+
+
+/* Form Alanı */
+.hikaye-formu .form-grup label .form-grup1,
+.form-grup label {
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+.hikaye-formu {
+    background: #d0cccc;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.form-grup {
+    margin-bottom: 24px;
+}
+
+.form-grup label {
+    display: block;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #242222;
+    text-align: center;
+}
+
+.form-grup input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    color: #000000;
+    box-sizing: border-box;
+}
+
+.form-grup input[type="text"]:focus {
+    border-color: #525252;
+    outline: none;
+}
+
+.form-grup0 {
+    margin-bottom: 24px;
+}
+
+.form-grup0 label {
+    display: block;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #242222;
+    text-align: center;
+}
+
+.form-grup0 input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 6px;
+    color: #000000;
+    box-sizing: border-box;
+}
+
+.form-grup0 input[type="text"]:focus {
+    border-color: #525252;
+    outline: none;
+}
+
+.starating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.starating input[type="radio"] {
+    display: none;
+}
+
+.starating label {
+    font-size: 2rem !important;
+    color: #cccbca !important;
+    cursor: pointer;
+    display: inline-block !important;
+    width: auto !important;
+    transition: color 0.15s ease;
+}
+
+.starating label.locked-star {
+    cursor: not-allowed !important;
+}
+
+.starating input[id="star5"]:checked ~ label,
+.starating label[for="star5"]:hover,
+.starating label[for="star5"]:hover ~ label {
+    color: #ffca28 !important;
+    text-shadow: 0 0 4px rgba(255, 202, 40, 0.5);
+}
+
+/* Dosya Seçme Alanı Tasarımı */
+.form-grup input[type="file"] {
+    color: #a3a3a3;
+    font-size: 0.9rem;
+}
+
+.gonder-butonu {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 12px 24px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+.gonder-butonu:hover {
+    background-color: #e5e5e5;
+}
+
+.modal {
+    display: none; /* İlk başta gizli olacak */
+    position: fixed;
+    z-index: 1000; /* Her şeyin en üstünde dursun */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11, 11, 11, 0.95); /* Arkadaki siteyi kapatan şık transparan siyahlık */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: acilisEfekti 0.3s ease;
+}
+
+/* Açılırken pürüzsüzce belirmesi için animasyon 
+@keyframes acilisEfekti {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}*/
+
+.modal-icerik {
+    max-width: 85%;
+    max-height: 75vh; /* Ekran yüksekliğinin %75'ini geçmesin */
+    border-radius: 8px;
+    /*box-shadow: 0 10px 30px rgba(0,0,0,0.5);*/
+    object-fit: contain;
+}
+
+
+
+/* İndirme Buton Alanı */
+.modal-butonlar {
+    margin-top: 20px;
+}
+
+/* İndirme Butonunun Yeni Şık ve Minimalist Hali */
+.indir-butonu {
+    font-family: 'Montserrat', sans-serif !important;
+    background-color: transparent !important; /* Kaba gri arka planı tamamen sildik */
+    color: #ffffff !important;                /* Yazı veya ikon rengi saf beyaz */
+    /*border: 2px solid rgba(255, 255, 255, 0.6); */
+    padding: 7px 16px !important;
+    border-radius: 8px !important;           /* Köşeleri tam yuvarlak yaparak modernleştirdik */
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 2.7rem !important;
+    letter-spacing: 0.05em !important;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease !important;     /* Geçiş efektini pürüzsüzleştirdik */
+}
+
+/* Butonun üzerine gelindiğinde (Hover Efekti) */
+.indir-butonu:hover {
+    /*background-color: #ffffff !important;     /* Üzerine gelince içi asil bir beyazla dolar */
+    color: #837b7b !important;                /* İçindeki ok/yazı siyah olur */
+    /*border-color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2); /* Etrafına hafif bir beyaz ışıltı verir */
+    transform: translateY(-2px);              /* Çok hafif yukarı zıplama hissi */
+}
+
+
+/* Fotoğrafların üzerine gelince tıklanabilir olduğunu belirtmek için imleci el işareti yapıyoruz */
+.galeri-resim {
+    cursor: pointer;
+}
+
+/* Gerçek input alanını tamamen görünmez yapıyoruz */
+.dosya-yukle-tasarim input[type="file"] {
+    display: none;
+}
+
+/* Bizim oluşturduğumuz yeni buton stili */
+.dosya-yukle-tasarim {
+    display: flex !important;
+    flex-direction: column !important; /* Üst üste binmelerini sağlar */
+    align-items: center !important;    /* Yatayda tam merkeze kilitler */
+    justify-content: center !important;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.ozel-dosya-butonu {
+    display: inline-block !important;
+    width: max-content !important;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;   
+    margin-top: 5px;
+    
+}
+
+.ozel-dosya-butonu:hover {
+    background-color: #e5e5e5;
+    transform: translateY(-1px);
+}
+
+/* Seçilen dosya sayısını gösteren yan yazı */
+.dosya-durum-yazisi {
+    color: #363636; /* Gri arka planda net okunması için beyaz yaptık */
+    margin-top: 8px;
+    font-size: 0.85rem;
+    display: block;
+    text-align: center;
+}
+
+/* Admin sil butonu tasarımı */
+.admin-sil-butonu {
+    font-family: 'Montserrat', sans-serif !important;
+    color: #c94c4c !important; /* Tasarımı bozmayan soft kırmızı uyarı rengi */
+    font-size: 0.8rem !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    display: inline-block;
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s ease;
+}
+
+.admin-sil-butonu:hover {
+    opacity: 0.6;
+}
+
+/* ==========================================================================
+   MOBİL UYUMLULUK (Ekran genişliği 600px ve daha küçükse devreye girer)
+   ========================================================================== */
+@media (max-width: 600px) {
+    .site-konteyner {
+        padding: 30px 15px; /* Mobilde dış boşlukları azalttık */
+    }
+
+    header h1 {
+        font-size: 1.8rem; /* Başlığı mobilde biraz küçülttük */
+    }
+
+    .hikaye-kartı {
+        padding: 16px; /* Kart içi boşlukları daralttık */
+    }
+
+    /* Fotoğraf Izgarasını Mobilde 2'li Yapıyoruz */
+    .resim-izgara {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 8px; /* Resimlerin arasındaki boşluğu azalttık */
+    }
+
+    .galeri-resim {
+        height: 130px; /* Resimlerin mobilde çok uzun görünmesini engelledik */
+    }
+
+    /* Üst taraftaki Başlık ve Sil Butonunu mobilde alt alta alabiliriz */
+    .hikaye-kartı > div {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+
+   
+}
+
+/* Telefon ve mobil ekranlar için özel boyutlandırma (Ekran genişliği 480px ve altı için) */
+@media screen and (max-width: 480px) {
+    
+    /* "Şevval ve Can'ın Düğün Galerisi" başlığını telefonda kibarlaştırır */
+    header h1, 
+    .site-konteyner header h1 {
+        font-size: 2.2rem !important; /* 4.5rem'den daha zarif bir boyuta çektik */
+        line-height: 1.2 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .baslik-ust-resim,
+    .ust-resim {
+        width: 100% !important;
+        max-width: 320px !important;
+        height: 180px !important;
+        margin: 0 auto 15px auto !important;
+    }
+
+    /* "bizi bir de sizin gözünüzden görelim" alt metnini küçültür */
+    header p {
+        font-size: 0.85rem !important; /* 1.1rem'den düşürdük */
+        letter-spacing: 0.05em !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* "fotoğraflarınızı yüklemek için tıklayın" link butonunu dengeler */
+    .yaz-butonu {
+        font-size: 0.75rem !important;
+        padding: 8px 16px !important;
+    }
+
+    /* Sayfa kenarlarındaki boşlukları mobilde daraltarak fotoğraflara alan açar */
+    .site-konteyner {
+        padding: 30px 15px !important;
+    }
+
+    
+    
+}

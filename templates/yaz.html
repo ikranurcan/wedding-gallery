@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>şevval&can</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='logo3.png')}}">
+</head>
+<body>
+
+    <div class="site-konteyner">
+        <header>
+            <h1>hazırsan, paylaş</h1>
+            <a href="{{ url_for('anasayfa') }}" class="geri-link">← galeriye dön</a>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&family=Nunito:wght@400;600&family=Parisienne&display=swap" rel="stylesheet">
+        </header>
+
+        <main>
+            <form method="POST" enctype="multipart/form-data" class="hikaye-formu">
+                <div class="form-grup">
+                    <label for="yazar">isminiz</label>
+                    <input type="text" id="yazar" name="yazar" required placeholder="örnek: güvercin">
+                </div>
+
+                <div class="form-grup0">
+                    <label>düğüne puanınız kaç?</label>
+                    <div class="starating">
+                        <input type="radio" id="star5" name="rate" value="5" required><label for="star5" >★</label>
+                        <input type="radio" id="star4" name="rate" value="4" required><label for="star4" title="sadece 5 yıldız verebilirsiniz :D" >★</label>
+                        <input type="radio" id="star3" name="rate" value="3" required><label for="star3" title="sadece 5 yıldız verebilirsiniz :D" >★</label>
+                        <input type="radio" id="star2" name="rate" value="2" required><label for="star2" title="sadece 5 yıldız verebilirsiniz :D" >★</label>
+                        <input type="radio" id="star1" name="rate" value="1" required><label for="star1" title="sadece 5 yıldız verebilirsiniz :D" >★</label>
+                    </div>
+                </div>
+                
+                <div class="form-grup">
+                    <label for="fotograflar">en fazla 5 adet fotoğraf seçebilirsiniz, dikkat bu yoldan dönüş yok!</label>
+                    <div class="dosya-yukle-tasarim">
+                        <input type="file" id="fotograflar" name="fotograflar" accept="image/*" multiple required>
+                        <label for="fotograflar" class="ozel-dosya-butonu">fotoğraflarınızı seçmek için tıklayın</label>
+                        <span id="dosya-durum" class="dosya-durum-yazisi">Henüz dosya seçilmedi</span>
+                     </div>
+                </div>
+
+                <button type="submit" class="gonder-butonu">paylaş </button>
+                
+            </form>
+        </main>
+    </div>
+
+    <script>
+        const uploadInput = document.getElementById('fotograflar');
+        const dosyaDurum = document.getElementById('dosya-durum');
+        uploadInput.addEventListener('change', function() {
+            if (this.files.length > 5) {
+                alert('Lütfen en fazla 5 fotoğraf seçin!');
+                this.value = ''; // Seçimi temizle
+                dosyaDurum.textContent = 'Henüz dosya seçilmedi';
+        } else if (this.files.length > 0) {
+            // Kaç adet dosya seçildiğini ekrana yazar
+            dosyaDurum.textContent = this.files.length + ' fotoğraf seçildi';
+        } else {
+            dosyaDurum.textContent = 'Henüz dosya seçilmedi';
+        }
+        });
+    </script>
+
+</body>
+</html>

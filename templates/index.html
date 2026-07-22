@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>şevval&can</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='logo3.png')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;600&family=Nunito:wght@400;600&family=Parisienne&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="site-konteyner">
+        <header>
+            <img src="/static/resimler/logo4.jpg" class="ust-resim" alt="logo">
+            <h1>Şevval ve Can'ın Düğün Galerisi</h1>
+            <p>bizi bir de sizin gözünüzden görelim</p>
+            <a href="{{ url_for('fotograf_yukle') }}" class="yaz-butonu">fotoğraflarınızı yüklemek için tıklayın</a>
+        </header>
+
+        <main class="hikaye-alani">
+
+            {% for gonderi in galeri %}
+                <div class="hikaye-kartı">
+                   <h3>· {{ gonderi.yazar }}</h3>
+                   {% if gonderi.puan and gonderi.puan > 0 %}
+                        <div style="color: #ffca28; margin: 6px 0; font-size: 1.2rem; letter-spacing: 2px;">
+                            {% for i in range(gonderi.puan) %}★{% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if admin_mi %}
+                      <a href="{{ url_for('gonderi_sil', gonderi_id=gonderi.id) }}?sifre=sevvalcan2026" 
+                        class="admin-sil-butonu" 
+                        onclick="return confirm('Bu gönderiyi ve tüm fotoğraflarını kalıcı olarak silmek istediğinize emin misiniz?');">
+                        [gönderiyi sil]
+                      </a>
+                    {% endif %}
+                        
+                    
+                    <div class="resim-izgara">
+                        {% for resim_yolu in gonderi.dosya_yollari %}
+                           <img src="{{ resim_yolu }}" alt="Yüklenen Resim" class="galeri-resim" onclick="fotografBuyut(this.src)">
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </main>
+    </div>
+
+    <div id="fotografModal" class="modal">
+        <img class="modal-icerik" id="buyukResim">
+        <div class="modal-butonlar">
+            <a id="indirButonu" href="#" download class="indir-butonu">↓</a>
+        </div>
+    </div>
+
+    <script>
+        function fotografBuyut(resimKaynagi) {
+            var modal = document.getElementById("fotografModal");
+            var buyukResim = document.getElementById("buyukResim");
+            var indirButonu = document.getElementById("indirButonu");
+            
+            modal.style.display = "flex"; // Pencereyi görünür yap
+            buyukResim.src = resimKaynagi; // Küçük resmin adresini büyük resme aktar
+            indirButonu.href = resimKaynagi; // İndirme butonuna resmin adresini bağla
+        }
+
+        /*function modalKapat() {
+            var modal = document.getElementById("fotografModal");
+            modal.style.display = "none"; // Pencereyi gizle
+        }*/
+
+        // Pencerenin dışındaki siyah alana tıklayınca da kapansın
+        window.onclick = function(event) {
+            var modal = document.getElementById("fotografModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>""
