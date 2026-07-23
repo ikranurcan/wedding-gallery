@@ -122,8 +122,8 @@ def fotograf_yukle():
     return render_template('yaz.html')
 
 if __name__ == '__main__':
-    app.run(
-        host="0.0.0.0"
+    app.run (
+        host="0.0.0.0",
         port=int(os.environ.get("PORT", 5000)),
-        debug=False
-    )
+        debug=False,
+      )
