@@ -4,6 +4,7 @@ import sqlite3 #siteye yüklenen verilerin kalıcı olması için kullanılacak 
 
 import cloudinary
 import cloudinary.uploader
+import cloudinary.api
 
 app = Flask(__name__) #web sitesinin motorunu çalıştıran ana komut
 cloudinary.config(
@@ -28,7 +29,9 @@ def veritabani_kur():
         CREATE TABLE IF NOT EXISTS gonderiler (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             yazar TEXT NOT NULL,
-            dosya_yollari TEXT NOT NULL
+            puan INTEGER NOT NULL DEFAULT 5,
+            dosya_yollari TEXT NOT NULL,
+            public_idler TEXT NOT NULL
         )
     ''')
     baglanti.commit()
@@ -72,17 +75,14 @@ def gonderi_sil(gonderi_id):
     cursor = baglanti.cursor()
     
     # Bilgisayarın klasöründeki resim dosyalarını da fiziksel olarak silmek için önce yolları çekiyoruz
-    cursor.execute('SELECT dosya_yollari FROM gonderiler WHERE id = ?', (gonderi_id,))
+    cursor.execute('SELECT dosya_yollari, public_idler FROM gonderiler WHERE id = ?', (gonderi_id,))
     gonderi = cursor.fetchone()
     
     if gonderi:
         # Veritabanındaki virgülle ayrılmış yolları listeye çevirip tek tek dosyaları siliyoruz
-        yollar = gonderi['dosya_yollari'].split(',')
-        for yol in yollar:
-            # Başındaki eğik çizgiyi temizleyerek 'static/uploads/...' formatına getirir
-            temiz_yol = yol.lstrip('/') 
-            if os.path.exists(temiz_yol):
-                os.remove(temiz_yol)
+        public_idler = gonderi['public_idler'].split(',')
+        for public_id in public_idler:
+          cloudinary.uploader.destroy(public_id)  
                 
         # Dosyalar klasörden silindikten sonra veritabanı satırını da temizliyoruz
         cursor.execute('DELETE FROM gonderiler WHERE id = ?', (gonderi_id,))
@@ -103,20 +103,22 @@ def fotograf_yukle():
             return "en fazla 5 fotoğraf yükleyebilirsiniz!", 400
             
         kaydedilen_yollar = []
+        kaydedilen_public_idler = []
         for dosya in gelen_dosyalar:
             if dosya.filename != '':
                  sonuc = cloudinary.uploader.upload(dosya)
-                 web_yolu = sonuc["secure_url"]
-                 kaydedilen_yollar.append(web_yolu)
+                 kaydedilen_yollar.append(sonuc["secure_url"])
+                 kaydedilen_public_idler.append(sonuc["public_id"]) 
 
         if kaydedilen_yollar:
             # Fotoğraf yollarını aralarına virgül koyarak tek bir metin haline getiriyoruz
             yollar_metni = ",".join(kaydedilen_yollar)
+            public_idler_metni = ",".join(kaydedilen_public_idler)
             
             # VERİTABANINA KAYDETME
             baglanti = veritabani_baglan()
             cursor = baglanti.cursor()
-            cursor.execute('INSERT INTO gonderiler (yazar, dosya_yollari) VALUES (?, ?)', (yazar, yollar_metni))
+            cursor.execute('INSERT INTO gonderiler (yazar, dosya_yollari, public_idler) VALUES (?, ?, ?)',(yazar, yollar_metni, public_idler_metni))
             baglanti.commit()
             baglanti.close()
             
