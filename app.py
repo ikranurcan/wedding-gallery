@@ -2,11 +2,16 @@ from flask import Flask, render_template, request, redirect, url_for #kütüphan
 import os #operating system, bilgisayarın işletim sistemiyle iletişimi sağlar
 import sqlite3 #siteye yüklenen verilerin kalıcı olması için kullanılacak mini veritabanı kütüphanesi
 
-app = Flask(__name__) #web sitesinin motorunu çalıştıran ana komut
+import cloudinary
+import cloudinary.uploader
 
-UPLOAD_FOLDER = os.path.join('static', 'uploads') #yüklenen fotoğrafların bilgisayarda hangi klasöre kaydedileceğini belirler
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(UPLOAD_FOLDER, exist_ok=True) #bilgisayara eğer static/upload adında klasör yoksa hemen oluştur varsa da hata verme aynen devam et der
+app = Flask(__name__) #web sitesinin motorunu çalıştıran ana komut
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET")
+)
+
 
 # VERİTABANI FONKSİYONLARI
 def veritabani_baglan():
@@ -31,7 +36,6 @@ def veritabani_kur():
 
 # Uygulama başlarken veritabanını hazırla
 veritabani_kur()
-
 
 @app.route('/')
 def anasayfa():
@@ -101,11 +105,10 @@ def fotograf_yukle():
         kaydedilen_yollar = []
         for dosya in gelen_dosyalar:
             if dosya.filename != '':
-                dosya_yolu = os.path.join(app.config['UPLOAD_FOLDER'], dosya.filename)
-                dosya.save(dosya_yolu)
-                web_yolu = f"/static/uploads/{dosya.filename}"
-                kaydedilen_yollar.append(web_yolu)
-                
+                 sonuc = cloudinary.uploader.upload(dosya)
+                 web_yolu = sonuc["secure_url"]
+                 kaydedilen_yollar.append(web_yolu)
+
         if kaydedilen_yollar:
             # Fotoğraf yollarını aralarına virgül koyarak tek bir metin haline getiriyoruz
             yollar_metni = ",".join(kaydedilen_yollar)
