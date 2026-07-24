@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for #kütüphaneyi kullanmak ve gerekli araçları çağırmak için 
 import os #operating system, bilgisayarın işletim sistemiyle iletişimi sağlar
-import sqlite3 #siteye yüklenen verilerin kalıcı olması için kullanılacak mini veritabanı kütüphanesi
+
+import psycopg2 #siteye yüklenen verilerin kalıcı olması için kullanılacak mini veritabanı kütüphanesi
+from psycopg2.extras import RealDictCursor
 
 import cloudinary
 import cloudinary.uploader
@@ -16,10 +18,10 @@ cloudinary.config(
 
 # VERİTABANI FONKSİYONLARI
 def veritabani_baglan():
-    # SQLITE veritabanı dosyasına bağlanır
-    baglanti = sqlite3.connect('veritabani.db')
-    baglanti.row_factory = sqlite3.Row # Verileri sözlük yapısında alabilmek için
-    return baglanti
+    return psycopg2.connect(
+        os.environ["DATABASE_URL"],
+        cursor_factory=RealDictCursor
+     )
 
 def veritabani_kur():
     # İlk çalıştırmada tabloları otomatik oluşturur
@@ -27,7 +29,7 @@ def veritabani_kur():
     cursor = baglanti.cursor() #veritabanı içinde işlem yapmamızı sağlayan dijital bir kalem oluşturur
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS gonderiler (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            id SERIAL PRIMARY KEY, 
             yazar TEXT NOT NULL,
             puan INTEGER NOT NULL DEFAULT 5,
             dosya_yollari TEXT NOT NULL,
@@ -35,6 +37,7 @@ def veritabani_kur():
         )
     ''')
     baglanti.commit()
+    cursor.close()
     baglanti.close()
 
 # Uygulama başlarken veritabanını hazırla
@@ -48,6 +51,7 @@ def anasayfa():
     # Tüm gönderileri veritabanından çekiyoruz
     cursor.execute('SELECT * FROM gonderiler ORDER BY id DESC')
     db_gonderiler = cursor.fetchall()
+    cursor.close()
     baglanti.close()
     
     # Veritabanından gelen veriyi HTML'in anlayacağı listeye çeviriyoruz
@@ -75,7 +79,7 @@ def gonderi_sil(gonderi_id):
     cursor = baglanti.cursor()
     
     # Bilgisayarın klasöründeki resim dosyalarını da fiziksel olarak silmek için önce yolları çekiyoruz
-    cursor.execute('SELECT dosya_yollari, public_idler FROM gonderiler WHERE id = ?', (gonderi_id,))
+    cursor.execute("SELECT dosya_yollari, public_idler FROM gonderiler WHERE id = %s", (gonderi_id,))
     gonderi = cursor.fetchone()
     
     if gonderi:
@@ -85,9 +89,10 @@ def gonderi_sil(gonderi_id):
           cloudinary.uploader.destroy(public_id)  
                 
         # Dosyalar klasörden silindikten sonra veritabanı satırını da temizliyoruz
-        cursor.execute('DELETE FROM gonderiler WHERE id = ?', (gonderi_id,))
+        cursor.execute("DELETE FROM gonderiler WHERE id = %s",(gonderi_id,))
         baglanti.commit()
-        
+
+    cursor.close()    
     baglanti.close()
     
     # Silme bittikten sonra yine admin modu açık kalacak şekilde anasayfaya yönlendir
@@ -118,8 +123,9 @@ def fotograf_yukle():
             # VERİTABANINA KAYDETME
             baglanti = veritabani_baglan()
             cursor = baglanti.cursor()
-            cursor.execute('INSERT INTO gonderiler (yazar, dosya_yollari, public_idler) VALUES (?, ?, ?)',(yazar, yollar_metni, public_idler_metni))
+            cursor.execute("INSERT INTO gonderiler (yazar, dosya_yollari, public_idler) VALUES (%s, %s, %s)",(yazar, yollar_metni, public_idler_metni))
             baglanti.commit()
+            cursor.close()
             baglanti.close()
             
         return redirect(url_for('anasayfa'))
