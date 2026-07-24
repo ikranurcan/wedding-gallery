@@ -67,12 +67,12 @@ def anasayfa():
             "dosya_yollari": gonderi['dosya_yollari'].split(',')
         })
         
-    return render_template('index.html', galeri=islenmis_galeri, admin_mi=admin_kontrol)
+    return render_template('index.html', galeri=islenmis_galeri, admin_mi=admin_kontrol,admin_sifre=os.environ.get("ADMIN_PASSWORD"))
 
 @app.route('/sil/<int:gonderi_id>')
 def gonderi_sil(gonderi_id):
     # GÜVENLİK KONTROLÜ: Şifre adreste doğru belirtilmemişse işlemi reddet
-    if request.args.get('sifre') != 'sevvalcan2026':
+    if request.args.get('sifre') != os.environ.get("ADMIN_PASSWORD"):
         return "Bu işlem için yetkiniz yok!", 403
         
     baglanti = veritabani_baglan()
