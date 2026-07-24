@@ -65,7 +65,7 @@
             
             modal.style.display = "flex"; // Pencereyi görünür yap
             buyukResim.src = resimKaynagi; // Küçük resmin adresini büyük resme aktar
-            indirButonu.href = resimKaynagi; // İndirme butonuna resmin adresini bağla
+            indirButonu.href = resimKaynagi.replace("/upload/","/upload/fl_attachment/"); // İndirme butonuna resmin adresini bağla
         }
 
         /*function modalKapat() {
