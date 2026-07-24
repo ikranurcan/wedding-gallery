@@ -32,7 +32,7 @@
                     {% endif %}
                     
                     {% if admin_mi %}
-                      <a href="{{ url_for('gonderi_sil', gonderi_id=gonderi.id) }}?sifre=sevvalcan2026" 
+                      <a href="{{ url_for('gonderi_sil', gonderi_id=gonderi.id) }}?sifre={{admin_sifre}}" 
                         class="admin-sil-butonu" 
                         onclick="return confirm('Bu gönderiyi ve tüm fotoğraflarını kalıcı olarak silmek istediğinize emin misiniz?');">
                         [gönderiyi sil]
@@ -74,12 +74,13 @@
         }*/
 
         // Pencerenin dışındaki siyah alana tıklayınca da kapansın
-        window.onclick = function(event) {
-            var modal = document.getElementById("fotografModal");
+        const modal = document.getElementById("fotografModal");
+        modal.addEventListener("click", function(event) {
             if (event.target == modal) {
-                modal.style.display = "none";
+                modal.style.display="none";
             }
-        }
+        });
+        
     </script>
 
 </body>
